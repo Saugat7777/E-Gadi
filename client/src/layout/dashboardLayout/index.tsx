@@ -149,7 +149,7 @@ const DashboardLayout: React.FC = () => {
         >
           <Flex align="center" justify="center" style={{}}>
             <Typography.Text>
-              E-Gadi ©{new Date().getFullYear()} Created by ConfuseSuon
+              E-Gadi ©{new Date().getFullYear()} Crafted by SmilingHuman
             </Typography.Text>
           </Flex>
         </Footer>

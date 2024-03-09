@@ -285,9 +285,13 @@ const Profile = () => {
                   </Flex>
                 </Form.Item>
               </Col>
-              <Col>
+              {
+                data?.imageURL ? 
+
+                <Col>
                 <Image height={200} src={data?.imageURL ?? ""} />
-              </Col>
+              </Col> : null
+              }
             </Row>
           </Form>
         </Card>

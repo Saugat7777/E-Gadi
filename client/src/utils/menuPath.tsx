@@ -4,6 +4,7 @@ import {
   TagOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+import { ref2 } from "../container/dashboard/profile";
 
 export const headerMenuItem = [
   {
@@ -57,7 +58,7 @@ export const sidebarMenuItem = [
     icon: <TagOutlined />,
   },
   {
-    label: "Profile",
+    label: <span ref={ref2}>Profile</span>,
     key: "/dashboard/profile",
     guard: "user",
     icon: <TagOutlined />,

@@ -2,18 +2,26 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Space, Spin, Table } from "antd";
 
 import moment from "moment";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import CsDeleteConfirmation from "../../../component/atom/CsDeleteConfimation";
 import { handleBreadCumbs } from "../../../features/globalSlice";
-import { useGetUsersQuery } from "../../../services/user";
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from "../../../services/user";
 import { useAppDispatch } from "../../../store";
 
 const Users = () => {
   const dispatch = useAppDispatch();
+  const [visibleDeleteConfirmation, setVisibility] = useState<Boolean>(false);
+  const [selectedPopup, setSelectedPopup] = useState<string>("");
+
   useEffect(() => {
     dispatch(handleBreadCumbs([{ title: "Dashboard" }, { title: "Users" }]));
   }, []);
 
   const { data, isLoading } = useGetUsersQuery();
+  const [deleteUser] = useDeleteUserMutation();
 
   const columns = useMemo(
     () => [
@@ -88,7 +96,7 @@ const Users = () => {
             <Space>
               <DeleteOutlined
                 style={{ color: "#ff8e3c" }}
-                // onClick={() => handleVisibleDeleteConfirmation(record)}
+                onClick={() => handleVisibleDeleteConfirmation(record)}
               />
             </Space>
           );
@@ -98,17 +106,35 @@ const Users = () => {
     [data]
   );
 
+  const handleVisibleDeleteConfirmation = (item: any) => {
+    setSelectedPopup(item?._id);
+    setVisibility(true);
+  };
+
+  const handleCancelDeleteConfirmation = () => {
+    setSelectedPopup("");
+    setVisibility(false);
+  };
+
+  const handleSubmitDeleteConfirmation = async () => {
+    setVisibility(false);
+    try {
+      await deleteUser(selectedPopup);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Spin spinning={isLoading}>
       <Table columns={columns} dataSource={data} />
-      {/* <Table columns={columns} dataSource={data} />
 
       <CsDeleteConfirmation
         visible={visibleDeleteConfirmation}
         handleDelete={handleSubmitDeleteConfirmation}
         handleCancel={handleCancelDeleteConfirmation}
-        confirmMessage="Are you sure you want to delete the selected new car?"
-      /> */}
+        confirmMessage="Are you sure you want to delete the selected user?"
+      />
     </Spin>
   );
 };

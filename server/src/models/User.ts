@@ -32,6 +32,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     imageURL: {
       type: String,
     },
+    verified: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

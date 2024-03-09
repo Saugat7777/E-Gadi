@@ -20,6 +20,7 @@ export const getCurrentUser = async (
       return res.status(404).json({ message: "User not found", data: {} });
     }
     user.password = undefined;
+
     return res.status(200).json({ message: Generic_Msg.Get_By_Id, data: user });
   } catch (error) {
     return res

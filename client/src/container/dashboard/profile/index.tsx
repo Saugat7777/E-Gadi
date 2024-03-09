@@ -13,11 +13,19 @@ import {
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import CsImageUpload from "../../../component/atom/CsUploadImage";
 import { handleBreadCumbs } from "../../../features/globalSlice";
 import { useUpdateUserMutation } from "../../../services/user";
 import { useGetCurrentUserAllDataQuery } from "../../../services/userDataAPI";
 import { useAppDispatch } from "../../../store";
+
+export const ref1 = { current: null };
+export const ref2 = { current: null };
+export const ref3 = { current: null };
+export const ref4 = { current: null };
+export const ref5 = { current: null };
+export const ref6 = { current: null };
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -72,10 +80,7 @@ const Profile = () => {
                   ]}
                   initialValue={data?.full_name ?? ""}
                 >
-                  <Input
-                    placeholder="Enter a full name"
-                    defaultValue={data?.full_name}
-                  />
+                  <Input placeholder="Enter a full name" />
                 </Form.Item>{" "}
                 <Form.Item
                   name="email"
@@ -93,52 +98,56 @@ const Profile = () => {
                 >
                   <Input placeholder="Enter a address" />
                 </Form.Item>
-                <Form.Item
-                  label="Contact Number"
-                  name="contactNumber"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please, enter a contact number",
-                    },
-                  ]}
-                  initialValue={data?.contactNumber ?? ""}
-                >
-                  <Input placeholder="Enter a contact number" />
-                </Form.Item>{" "}
-                <Typography.Text style={{ margin: "0 0 0 .2rem" }}>
-                  <span style={{ color: "#fb565a" }}>*</span> Social Media
-                </Typography.Text>
-                <Row gutter={[16, 0]} style={{ marginTop: ".2rem" }}>
-                  <Col span={12}>
-                    <Form.Item
-                      name="facebook"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please, enter facebook link",
-                        },
-                      ]}
-                      initialValue={data?.socialMedia[0]?.facebook ?? ""}
-                    >
-                      <Input placeholder="Enter a facebook link" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      name="instagram"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please, enter instagram link",
-                        },
-                      ]}
-                      initialValue={data?.socialMedia[0]?.instagram ?? ""}
-                    >
-                      <Input placeholder="Enter a instagram link" />
-                    </Form.Item>
-                  </Col>
-                </Row>
+                <div ref={ref3}>
+                  <Form.Item
+                    label="Contact Number"
+                    name="contactNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please, enter a contact number",
+                      },
+                    ]}
+                    initialValue={data?.contactNumber ?? ""}
+                  >
+                    <Input placeholder="Enter a contact number" />
+                  </Form.Item>{" "}
+                </div>
+                <div ref={ref4}>
+                  <Typography.Text style={{ margin: "0 0 0 .2rem" }}>
+                    <span style={{ color: "#fb565a" }}>*</span> Social Media
+                  </Typography.Text>
+                  <Row gutter={[16, 0]} style={{ marginTop: ".2rem" }}>
+                    <Col span={12}>
+                      <Form.Item
+                        name="facebook"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please, enter facebook link",
+                          },
+                        ]}
+                        initialValue={data?.socialMedia[0]?.facebook ?? ""}
+                      >
+                        <Input placeholder="Enter a facebook link" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        name="instagram"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please, enter instagram link",
+                          },
+                        ]}
+                        initialValue={data?.socialMedia[0]?.instagram ?? ""}
+                      >
+                        <Input placeholder="Enter a instagram link" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </div>
                 <Form.Item
                   label="Current Password"
                   name="currentPassword"
@@ -232,40 +241,42 @@ const Profile = () => {
                     prefix={<LockOutlined style={{ marginRight: ".4rem" }} />}
                   />
                 </Form.Item>
-                <Form.Item
-                  label={
-                    <>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: ` <span style="color: red">*</span> Upload Image (select a JPG or a PNG image) `,
-                        }}
-                      />
-                    </>
-                  }
-                  name={"imageURL"}
-                  rules={[
-                    ({}) => ({
-                      validator() {
-                        if (!imageUrl) {
-                          return Promise.reject(
-                            "Please upload an image file or provide an image URL!"
-                          );
-                        }
-                        return Promise.resolve();
-                      },
-                    }),
-                  ]}
-                >
-                  <CsImageUpload
-                    imageUrl={imageUrl}
-                    imageUrlChange={imageUrlChange}
-                    isImageUploading={setLoading}
-                  />
-                </Form.Item>
+                <div ref={ref5}>
+                  <Form.Item
+                    label={
+                      <>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: ` <span style="color: red">*</span> Upload Image (select a JPG or a PNG image) `,
+                          }}
+                        />
+                      </>
+                    }
+                    name={"imageURL"}
+                    rules={[
+                      ({}) => ({
+                        validator() {
+                          if (!imageUrl) {
+                            return Promise.reject(
+                              "Please upload an image file or provide an image URL!"
+                            );
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
+                    ]}
+                  >
+                    <CsImageUpload
+                      imageUrl={imageUrl}
+                      imageUrlChange={imageUrlChange}
+                      isImageUploading={setLoading}
+                    />
+                  </Form.Item>
+                </div>
                 <Form.Item style={{ margin: "2rem 0 0 0" }}>
                   <Flex align="center" gap={8}>
-                    <Button type="primary" htmlType="submit">
-                      Upadate
+                    <Button type="primary" htmlType="submit" ref={ref6}>
+                      Update
                     </Button>
 
                     <Button type="default" onClick={() => navigate(-1)}>

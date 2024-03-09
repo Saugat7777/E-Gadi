@@ -1,6 +1,8 @@
 import {
+  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  TagOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -11,6 +13,7 @@ import {
   Flex,
   Layout,
   Menu,
+  Popconfirm,
   Typography,
   theme,
 } from "antd";
@@ -57,9 +60,26 @@ const DashboardLayout: React.FC = () => {
     },
   ];
 
-  const validatedMenuItems = sidebarMenuItem.filter(
+  const validatedMenuItems: any = sidebarMenuItem.filter(
     (menu) => menu.guard === (loggedInUser as any)?.role
   );
+
+  validatedMenuItems.push({
+    label: (
+      <Popconfirm
+        placement="rightTop"
+        title={"Logout"}
+        description={"Are you sure want to log out?"}
+        okText="Yes"
+        cancelText="No"
+        onConfirm={() => dispatch(handleLogout())}
+      >
+        Logout
+      </Popconfirm>
+    ),
+    icon: <LogoutOutlined rotate={180} />,
+    key: "logout",
+  });
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -92,7 +112,7 @@ const DashboardLayout: React.FC = () => {
           selectedKeys={activeMenu}
           onSelect={({ selectedKeys, key }) => {
             setActiveMenu(selectedKeys);
-            navigate(key);
+            if (key !== "logout") return navigate(key);
           }}
         />
       </Sider>
@@ -149,7 +169,7 @@ const DashboardLayout: React.FC = () => {
         >
           <Flex align="center" justify="center" style={{}}>
             <Typography.Text>
-              E-Gadi ©{new Date().getFullYear()} Crafted by SmilingHuman
+              E-Gadi ©{new Date().getFullYear()} Created by ConfuseSuon
             </Typography.Text>
           </Flex>
         </Footer>

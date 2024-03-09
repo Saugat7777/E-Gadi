@@ -1,17 +1,21 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Space, Spin, Table, Tag } from "antd";
+import { Button, Space, Spin, Table, Tour, TourProps } from "antd";
 
 import moment from "moment";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CsDeleteConfirmation from "../../../component/atom/CsDeleteConfimation";
 import ViewHeader from "../../../component/organism/ViewHeader";
-import { handleBreadCumbs } from "../../../features/globalSlice";
+import {
+  handleBreadCumbs,
+  toggleTourState,
+} from "../../../features/globalSlice";
 import {
   useDeleteUsedCarMutation,
   useGetUsedCarByCurrentUserQuery,
 } from "../../../services/usedCar";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { ref1, ref2 } from "../profile";
 
 const SellYourCar = () => {
   const navigate = useNavigate();
@@ -24,6 +28,8 @@ const SellYourCar = () => {
       handleBreadCumbs([{ title: "Dashboard" }, { title: "Sell Your Car" }])
     );
   }, []);
+
+  const { loggedInUser } = useAppSelector((state) => state.auth);
 
   const { data, isLoading } = useGetUsedCarByCurrentUserQuery();
   const [deleteUsedCar] = useDeleteUsedCarMutation();
@@ -138,10 +144,16 @@ const SellYourCar = () => {
       <ViewHeader>
         <Button
           type="primary"
-          onClick={() => navigate("/dashboard/sell-your-car/add")}
+          onClick={() => {
+            if ((loggedInUser as any)?.verified)
+              return navigate("/dashboard/sell-your-car/add");
+            dispatch(toggleTourState());
+          }}
+          ref={ref1}
         >
           Add Your Car
         </Button>
+        <Button style={{ marginLeft: "1rem" }}>hello</Button>
       </ViewHeader>
 
       <Table columns={columns} dataSource={data} />

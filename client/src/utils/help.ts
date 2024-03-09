@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { TourProps, message } from "antd";
 
 export const showMessage = (
   type: "success" | "error" | "warning",

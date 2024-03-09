@@ -10,6 +10,7 @@ export interface IUser extends Document {
   socialMedia?: object[];
   imageURL?: string;
   role: string;
+  verified?: boolean;
 }
 
 export interface INewCar extends Document {

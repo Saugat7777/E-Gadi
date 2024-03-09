@@ -18,6 +18,7 @@ export const userAPI = apiSlice.injectEndpoints({
         showMessage("error", baseQueryReturnValue?.data?.message);
         return baseQueryReturnValue?.data;
       },
+      invalidatesTags: ["UserAuth"],
     }),
     updateUser: builder.mutation<any, any>({
       query: ({ id, formData }) => ({
@@ -46,6 +47,23 @@ export const userAPI = apiSlice.injectEndpoints({
       },
       providesTags: ["UserAuth"],
     }),
+    deleteUser: builder.mutation<any, any>({
+      query: (id) => ({
+        url: `/auth/user/delete/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      transformResponse: (resp: any) => {
+        showMessage("success", resp?.message);
+        return resp;
+      },
+      transformErrorResponse(baseQueryReturnValue: any) {
+        console.log(baseQueryReturnValue, "bbb");
+        showMessage("error", baseQueryReturnValue?.data?.message);
+        return baseQueryReturnValue?.data;
+      },
+      invalidatesTags: ["UserAuth"],
+    }),
   }),
 });
 
@@ -55,4 +73,5 @@ export const {
   useRegisterUserMutation,
   useUpdateUserMutation,
   useGetUsersQuery,
+  useDeleteUserMutation,
 } = userAPI;

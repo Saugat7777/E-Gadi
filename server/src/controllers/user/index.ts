@@ -45,6 +45,7 @@ export const registerUser = async (
       contactNumber,
       socialMedia,
       role: matchedAdminEmail ? "admin" : "user",
+      verified: false,
     });
 
     const savedUserData = await userData.save();
@@ -132,6 +133,7 @@ export const updateUser = async (
             role,
             socialMedia,
             imageURL,
+            verified: true,
           }
         ).select("-password");
 
@@ -162,6 +164,7 @@ export const updateUser = async (
           role,
           socialMedia,
           imageURL,
+          verified: true,
         }
       ).select("-password");
 
@@ -192,6 +195,30 @@ export const getUsers = async (
     const users: IUser[] = await User.find().select("-password");
 
     return res.status(200).json({ message: Generic_Msg.Get_All, data: users });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: Generic_Msg.Server_Error, error: error });
+  }
+};
+
+export const deleteUser = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const {
+      params: { id },
+    } = req;
+    const deletedUser: IUser | null = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found", data: {} });
+    }
+    return res.status(200).json({
+      message: Generic_Msg.Delete,
+      data: deletedUser,
+    });
   } catch (error) {
     return res
       .status(500)

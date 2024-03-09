@@ -24,7 +24,6 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
 
   const onFinish = (formData: any) => {
     formData.imageURL = imageUrl;
-    console.log(formData, "hello");
     if (!!initialValues) {
       try {
         updateUsedCar({ formData, id: initialValues?._id });

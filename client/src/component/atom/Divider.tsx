@@ -5,6 +5,7 @@ interface CsDivider {
   dividerSize: number;
   title: string;
 }
+console.log("first")
 
 const CsDivider = ({ dividerSize, title }: CsDivider) => {
   return (

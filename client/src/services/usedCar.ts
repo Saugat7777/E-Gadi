@@ -15,6 +15,16 @@ export const usedCarAPI = apiSlice.injectEndpoints({
       },
       providesTags: ["UsedCars"],
     }),
+    getUsedCarById: builder.query<any, string>({
+      query: (id) => `/car/used-car/:${id}`,
+      transformResponse: (resp: any) => {
+        return resp?.data;
+      },
+      transformErrorResponse(baseQueryReturnValue: any) {
+        return baseQueryReturnValue?.data;
+      },
+      providesTags: ["UsedCars"],
+    }),
     getUsedCarByCurrentUser: builder.query<any, void>({
       query: () => "/car/used-car/get-by-current-user",
       transformResponse: (resp: any) => {

@@ -18,8 +18,14 @@ const baseQuery: BaseQueryFn<
 > = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
   prepareHeaders: (header, { getState }) => {
-    const { accessToken } = (getState() as RootState).auth;
-    if (accessToken) header.set("x-auth-token", accessToken);
+    const { accessToken, loginMethod } = (getState() as RootState).auth;
+    if (accessToken) {
+      if (loginMethod === "GOOGLE")
+        return header.set("google-auth-token", accessToken);
+      if (loginMethod === "SERVER")
+        return header.set("x-auth-token", accessToken);
+    }
+
     return header;
   },
 });

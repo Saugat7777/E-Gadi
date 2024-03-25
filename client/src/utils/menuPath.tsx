@@ -3,6 +3,7 @@ import {
   PieChartOutlined,
   TagOutlined,
   TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { ref2 } from "../container/dashboard/profile";
 
@@ -61,7 +62,7 @@ export const sidebarMenuItem = [
     label: <span ref={ref2}>Profile</span>,
     key: "/dashboard/profile",
     guard: "user",
-    icon: <TagOutlined />,
+    icon: <UserOutlined />,
   },
   {
     label: "Sell Your Car",

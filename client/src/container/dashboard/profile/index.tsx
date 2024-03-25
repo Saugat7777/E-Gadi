@@ -1,17 +1,18 @@
 import { LockOutlined } from "@ant-design/icons";
 import {
+  Avatar,
   Button,
   Card,
   Col,
   Flex,
   Form,
-  Image,
+  Grid,
   Input,
   Row,
   Spin,
   Typography,
 } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CsImageUpload from "../../../component/atom/CsUploadImage";
@@ -29,8 +30,11 @@ export const ref6 = { current: null };
 
 const Profile = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const screen = Grid.useBreakpoint();
+
   const [form] = Form.useForm();
+
+  // const {} =   useAppSelector((state) => state.auth)
 
   const { data, isLoading } = useGetCurrentUserAllDataQuery();
   const [updateUser] = useUpdateUserMutation();
@@ -44,6 +48,10 @@ const Profile = () => {
   useEffect(() => {
     dispatch(handleBreadCumbs([{ title: "Dashboard" }, { title: "Profile" }]));
   }, []);
+
+  useEffect(() => {
+    if (data) setImageUrl(data?.imageURL);
+  }, [data]);
 
   const onFinish = (formData: any) => {
     formData.imageURL = imageUrl;
@@ -70,8 +78,8 @@ const Profile = () => {
             onFinish={onFinish}
             scrollToFirstError
           >
-            <Row gutter={[16, 0]}>
-              <Col span={12}>
+            <Row gutter={[20, 0]}>
+              <Col xs={{ span: 24 }} md={{ span: 12 }}>
                 <Form.Item
                   label="Full Name"
                   name="full_name"
@@ -153,17 +161,21 @@ const Profile = () => {
                   name="currentPassword"
                   validateTrigger="onBlur"
                   style={{ marginTop: ".4rem" }}
+                  hidden={data?.passwordVerified ? false : true}
                   rules={[
                     ({ getFieldValue }) => ({
-                      validator(_) {
+                      validator(_, value) {
+                        if (data?.passwordVerified === false) {
+                          return Promise.resolve();
+                        }
                         if (
-                          getFieldValue(
-                            "newPassword" || getFieldValue("confirmPassword")
-                          )
+                          getFieldValue("newPassword") ||
+                          getFieldValue("confirmPassword")
                         ) {
-                          return Promise.reject(
-                            new Error("Please, enter current password")
-                          );
+                          if (!value)
+                            return Promise.reject(
+                              new Error("Please, enter current password")
+                            );
                         }
                         return Promise.resolve();
                       },
@@ -183,17 +195,26 @@ const Profile = () => {
                   style={{ marginTop: ".4rem" }}
                   rules={[
                     ({ getFieldValue }) => ({
-                      validator(_) {
-                        if (
-                          getFieldValue(
-                            "currentPassword" ||
-                              getFieldValue("confirmPassword")
-                          )
-                        ) {
-                          return Promise.reject(
-                            new Error("Please, enter current password")
-                          );
+                      validator(_, value) {
+                        if (data?.passwordVerified === false) {
+                          if (!value && !!getFieldValue("confirmPassword"))
+                            return Promise.reject(
+                              new Error("Please, enter new password")
+                            );
                         }
+
+                        if (data?.passwordVerified === true) {
+                          if (
+                            !!getFieldValue("confirmPassword") ||
+                            !!getFieldValue("currentPassword")
+                          )
+                            if (!value) {
+                              return Promise.reject(
+                                new Error("Please, enter  new password")
+                              );
+                            }
+                        }
+
                         return Promise.resolve();
                       },
                     }),
@@ -214,23 +235,18 @@ const Profile = () => {
                   rules={[
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (
-                          getFieldValue(
-                            "currentPassword" || getFieldValue("newPassword")
-                          )
-                        ) {
+                        if (!value && !!getFieldValue("newPassword"))
                           return Promise.reject(
                             new Error("Please, enter confirm password")
                           );
-                        }
-                        if (!value || getFieldValue("newPassword") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error(
-                            "The new password that you entered do not match!"
-                          )
-                        );
+                        if (value && getFieldValue("newPassword") !== value)
+                          return Promise.reject(
+                            new Error(
+                              "New passowrd and confirm password does not matched"
+                            )
+                          );
+
+                        return Promise.resolve();
                       },
                     }),
                   ]}
@@ -256,12 +272,14 @@ const Profile = () => {
                     rules={[
                       ({}) => ({
                         validator() {
-                          if (!imageUrl) {
-                            return Promise.reject(
-                              "Please upload an image file or provide an image URL!"
-                            );
+                          if (!!imageUrl) {
+                            return Promise.resolve();
                           }
-                          return Promise.resolve();
+                          return Promise.reject(
+                            new Error(
+                              "Please upload an image file or provide an image URL!"
+                            )
+                          );
                         },
                       }),
                     ]}
@@ -279,19 +297,18 @@ const Profile = () => {
                       Update
                     </Button>
 
-                    <Button type="default" onClick={() => navigate(-1)}>
+                    <Button type="default" onClick={() => form.resetFields()}>
                       Cancel
                     </Button>
                   </Flex>
                 </Form.Item>
               </Col>
-              {
-                data?.imageURL ? 
 
-                <Col>
-                <Image height={200} src={data?.imageURL ?? ""} />
-              </Col> : null
-              }
+              <Col style={{ display: screen?.xs ? "none" : "" }}>
+                {data?.imageURL ? (
+                  <Avatar src={data?.imageURL} size={200} shape="square" />
+                ) : null}
+              </Col>
             </Row>
           </Form>
         </Card>

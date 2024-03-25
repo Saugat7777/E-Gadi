@@ -66,6 +66,22 @@ export const newCarAPI = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["NewCars"],
     }),
+    rateNewCar: builder.mutation<any, any>({
+      query: ({ formData, id }) => ({
+        url: `/car/new-car/rate/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+      transformResponse: (resp: any) => {
+        showMessage("success", resp?.message);
+        return resp;
+      },
+      transformErrorResponse(baseQueryReturnValue: any) {
+        showMessage("error", baseQueryReturnValue?.data?.message);
+        return baseQueryReturnValue?.data;
+      },
+      invalidatesTags: ["NewCars"],
+    }),
   }),
 });
 
@@ -74,4 +90,5 @@ export const {
   usePostNewCarMutation,
   useUpdateNewCarMutation,
   useDeleteNewCarMutation,
+  useRateNewCarMutation,
 } = newCarAPI;

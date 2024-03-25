@@ -12,8 +12,16 @@ const newCarSchema: Schema<INewCar> = new mongoose.Schema(
     charging_0_to_100: { type: Number, required: true },
     seatingCapacity: { type: Number, required: true },
     price: { type: Number, required: true },
-    imageURL: { type: String, required: true },
+    imageURL: { type: [String], required: true },
+    batteryCapacity: { type: Number, required: true },
+    madeYear: { type: String, required: true },
+    groundClearance: { type: Number, required: true },
+    extraFeatures: { type: String, required: true },
     createdBy: { type: String, required: true },
+    identity: { type: String, required: true },
+    totalRating: { type: Number },
+    totalUserRated: { type: [String] },
+    rating: { type: Number },
   },
   { timestamps: true }
 );

@@ -1,4 +1,4 @@
-import { SearchOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -10,22 +10,32 @@ import {
   Select,
   Typography,
 } from "antd";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import firstCarousel from "../../../assets/carousel/car3.jpg";
 import secondCarousel from "../../../assets/carousel/car4.jpg";
 import aboutUsImage from "../../../assets/carousel/car7.jpg";
 
+import { useNavigate } from "react-router-dom";
 import CsCarCard from "../../../component/atom/CsCarCard";
 import CsDivider from "../../../component/atom/Divider";
+import { useGetSalesgroundNewCarsQuery } from "../../../services/salesgroundAPI";
 
 const carouselItem = [
   { id: 1, image: firstCarousel },
   { id: 2, image: secondCarousel },
 ];
 
+// Filter `option.label` match the user type `input`
+const filterOption = (
+  input: string,
+  option?: { label: string; value: string }
+) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
 const Home: React.FC = () => {
   const screen = Grid.useBreakpoint();
-  console.log(screen);
+  const { data: newCarsList } = useGetSalesgroundNewCarsQuery();
+  const [selectdCar, setSelectedCar] = useState(null);
+  const navigate = useNavigate();
   return (
     <Fragment>
       {/* Section 1 */}
@@ -38,7 +48,6 @@ const Home: React.FC = () => {
               height: "37rem",
               width: "100%",
               position: "absolute",
-              // background: "red",
               zIndex: "10",
             }}
           >
@@ -46,12 +55,14 @@ const Home: React.FC = () => {
               <Flex align="center" justify="center" vertical gap={"middle"}>
                 <Typography.Title
                   style={{ color: "white", wordSpacing: ".3rem" }}
+                  level={screen?.xs ? 4 : 1}
                 >
-                  Find a new Electric car
+                  Find a New Electric Car
                 </Typography.Title>
                 <Card
                   hoverable={true}
                   style={{
+                    width: `${screen?.xs ? "15rem" : "40rem"}  `,
                     background: "rgba(255, 255, 255, 0.12)",
                     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
                     backdropFilter: "blur(0.2px)",
@@ -61,52 +72,36 @@ const Home: React.FC = () => {
                     align="center"
                     justify="center"
                     gap={"large"}
-                    style={{ minWidth: "40rem" }}
+                    wrap="wrap"
                   >
                     <Select
-                      size="large"
-                      style={{ width: "100%" }}
                       showSearch
+                      optionFilterProp="children"
+                      filterOption={filterOption}
+                      size="large"
+                      style={{ width: "70%" }}
                       placeholder="Model"
-                      optionFilterProp="children"
-                      options={[
-                        {
-                          value: "jack",
-                          label: "Jack",
-                        },
-                        {
-                          value: "lucy",
-                          label: "Lucy",
-                        },
-                        {
-                          value: "tom",
-                          label: "Tom",
-                        },
-                      ]}
+                      value={selectdCar}
+                      onChange={(value) => setSelectedCar(value)}
+                      options={
+                        newCarsList
+                          ? newCarsList?.map((car: any) => ({
+                              value: `${car?._id}`,
+                              label: `${car?.carBrand} ${car?.carModel}`,
+                            }))
+                          : []
+                      }
                     />
-                    <Select
-                      size="large"
-                      style={{ width: "100%" }}
-                      showSearch
-                      placeholder="Type"
-                      optionFilterProp="children"
-                      options={[
-                        {
-                          value: "jack",
-                          label: "Jack",
-                        },
-                        {
-                          value: "lucy",
-                          label: "Lucy",
-                        },
-                        {
-                          value: "tom",
-                          label: "Tom",
-                        },
-                      ]}
-                    />
-                    <Button type="primary" icon={<SearchOutlined />}>
-                      Search
+
+                    <Button
+                      type="primary"
+                      shape="round"
+                      icon={<ArrowRightOutlined />}
+                      onClick={() => {
+                        navigate(`/salesground/new-cars/details/${selectdCar}`);
+                      }}
+                    >
+                      GO
                     </Button>
                   </Flex>
                 </Card>
@@ -152,18 +147,30 @@ const Home: React.FC = () => {
 
       {/* Section 2 */}
       <Row justify="center" align="middle">
-        <Col md={{ span: 16 }} lg={{ span: 16 }}>
+        <Col span={18}>
           <CsDivider title={"Newly Added Car"} dividerSize={5} />
           <Row
             justify={"center"}
             align={"middle"}
-            style={{ marginTop: "5rem" }}
+            style={{ marginTop: "2rem" }}
           >
             <Col span={24}>
-              <Flex justify="space-between" align="center">
-                <CsCarCard />
-                <CsCarCard />
-                <CsCarCard />
+              <Flex justify="center" wrap="wrap">
+                {newCarsList
+                  ? newCarsList?.slice(-3)?.map((car: any) => (
+                      <div style={{ padding: "2rem 1rem" }}>
+                        <CsCarCard
+                          imageURL={car?.imageURL[0]}
+                          title={`${car?.carBrand} ${car?.carModel}`}
+                          description={car?.description}
+                          price={car?.price}
+                          slug={car?._id}
+                          reqBy="new-cars"
+                          styleBy="home"
+                        />
+                      </div>
+                    ))
+                  : null}
               </Flex>
             </Col>
           </Row>
@@ -171,8 +178,17 @@ const Home: React.FC = () => {
           {/* Section 3 */}
           <Row style={{ marginTop: "12rem" }} justify="center" align="middle">
             <Col span={24}>
-              <Flex justify="space-between" align="center" gap={40}>
-                <Flex vertical style={{ width: "60%" }}>
+              <Flex
+                justify={screen?.xs ? "center" : "space-between"}
+                align="end"
+                gap={"large"}
+                wrap="wrap"
+              >
+                <Flex
+                  vertical
+                  style={{ width: `${screen?.xs ? "100%" : "50%"}` }}
+                  align="stretch"
+                >
                   <Typography.Title level={3}>About Us</Typography.Title>
                   <Typography.Paragraph>
                     Lorem Ipsum is simply dummy text of the printing and
@@ -198,8 +214,10 @@ const Home: React.FC = () => {
                     src={aboutUsImage}
                     alt=""
                     style={{
-                      height: "20rem",
+                      height: screen?.xs ? "10rem" : "20rem",
+                      width: screen?.xs ? "15rem" : "25rem",
                       objectFit: "cover",
+                      borderRadius: "7px",
                     }}
                   />
                 </Flex>

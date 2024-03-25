@@ -21,3 +21,23 @@ export const validateEmail = (_: any, value: string) => {
   }
   return Promise.resolve();
 };
+
+// Array of predefined colors
+const colors = [
+  "red",
+  "green",
+  "blue",
+  "yellow",
+  "orange",
+  "purple",
+  "pink",
+  "cyan",
+  "magenta",
+  "teal",
+];
+
+// Function to generate a random color from the array
+export function generateRandomColor() {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+}

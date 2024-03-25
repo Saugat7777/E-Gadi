@@ -1,5 +1,5 @@
 import { Spin, Tour, TourProps } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ref1,
@@ -11,14 +11,14 @@ import {
 } from "./container/dashboard/profile";
 import { toggleTourState } from "./features/globalSlice";
 import Routing from "./routes";
-import { useGetCurrentUserQuery } from "./services/userDataAPI";
+
 import { useAppDispatch, useAppSelector } from "./store";
 
 function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useGetCurrentUserQuery();
-  const { loggedInUser } = useAppSelector((state) => state.auth);
+
+  const { loggedInUser, loginMethod } = useAppSelector((state) => state.auth);
   const { openTour } = useAppSelector((state) => state.global);
   const [current, setCurrent] = useState(0);
 
@@ -97,7 +97,7 @@ function App() {
   ];
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={false}>
       <Tour
         open={openTour}
         onClose={() => {

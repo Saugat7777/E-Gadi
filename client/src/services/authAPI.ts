@@ -20,9 +20,25 @@ export const authAPI = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["UserAuth"],
     }),
+    loginWithGoogle: builder.mutation<any, any>({
+      query: (formData) => ({
+        url: "/auth/login/google",
+        method: "POST",
+        body: formData,
+      }),
+      transformResponse: (resp: any) => {
+        showMessage("success", resp?.message);
+        return resp;
+      },
+      transformErrorResponse(baseQueryReturnValue: any) {
+        showMessage("error", baseQueryReturnValue?.data?.message);
+        return baseQueryReturnValue?.data;
+      },
+      invalidatesTags: ["UserAuth"],
+    }),
   }),
 });
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation } = authAPI;
+export const { useLoginMutation, useLoginWithGoogleMutation } = authAPI;

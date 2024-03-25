@@ -1,29 +1,57 @@
-import { Button, Col, Flex, Form, Input, InputNumber, Row } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Form,
+  Grid,
+  Input,
+  InputNumber,
+  Radio,
+  Row,
+} from "antd";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CsUploadImage from "../../../component/atom/CsUploadImage";
 
+import { uid } from "uid";
+import CsMulImageUpload from "../../../component/atom/CsMulUploadImage";
 import {
   usePostUsedCarMutation,
   useUpdateUsedCarMutation,
 } from "../../../services/usedCar";
 
+export interface IMulImage {
+  url: string;
+  uid: string;
+}
+
 const YourCarForm: React.FC<any> = ({ initialValues }) => {
   const navigate = useNavigate();
+  const screen = Grid.useBreakpoint();
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState(initialValues?.imageURL ?? "");
+  const [imageUrl, setImageUrl] = useState<IMulImage[]>(
+    initialValues
+      ? initialValues?.imageURL?.map((url: string) => ({ url, uid: uid() }))
+      : []
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   const [postUsedCar, { isLoading: postLoading }] = usePostUsedCarMutation();
   const [updateUsedCar, { isLoading: updateLoading }] =
     useUpdateUsedCarMutation();
-  function imageUrlChange(url: any) {
-    setImageUrl(url);
+
+  function imageUrlChange(url: string, uid: string) {
+    setImageUrl((prevValues) => [...prevValues, { url, uid }]);
+  }
+
+  function removeImage(file: any) {
+    setImageUrl((prevValues) =>
+      prevValues.filter((value) => value.uid !== file.uid)
+    );
   }
 
   const onFinish = (formData: any) => {
-    formData.imageURL = imageUrl;
+    formData.imageURL = imageUrl.map((image) => image.url);
     if (!!initialValues) {
       try {
         updateUsedCar({ formData, id: initialValues?._id });
@@ -49,7 +77,7 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
       scrollToFirstError
     >
       <Row>
-        <Col span={12}>
+        <Col span={screen?.xs ? 24 : 12}>
           <Form.Item
             label="Brand Name"
             name="carBrand"
@@ -91,6 +119,46 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
             <Input placeholder="Enter current address" />
           </Form.Item>
           <Form.Item
+            label="Condition"
+            name="condition"
+            rules={[{ required: true, message: "Please, enter condition" }]}
+            initialValue={initialValues?.condition ?? ""}
+          >
+            <Input placeholder="Enter condition" />
+          </Form.Item>
+          <Form.Item
+            label="Modification"
+            name="modification"
+            rules={[{ required: true, message: "Please, select modification" }]}
+            initialValue={initialValues?.modification ?? false}
+          >
+            <Radio.Group style={{ width: "50%" }}>
+              <Radio.Button value={true} style={{ width: "50%" }}>
+                Yes
+              </Radio.Button>
+              <Radio.Button value={false} style={{ width: "50%" }}>
+                No
+              </Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            label="Accident History"
+            name="accidentHistory"
+            rules={[
+              { required: true, message: "Please, select accident history" },
+            ]}
+            initialValue={initialValues?.accidentHistory ?? false}
+          >
+            <Radio.Group style={{ width: "50%" }}>
+              <Radio.Button value={true} style={{ width: "50%" }}>
+                Yes
+              </Radio.Button>
+              <Radio.Button value={false} style={{ width: "50%" }}>
+                No
+              </Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
             label="Price"
             name="price"
             rules={[{ required: true, message: "Please, enter a price" }]}
@@ -102,6 +170,23 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
               step={100000}
             />
           </Form.Item>{" "}
+          <Form.Item
+            label="Negotiability"
+            name="negotiability"
+            rules={[
+              { required: true, message: "Please, select negotiability" },
+            ]}
+            initialValue={initialValues?.negotiability ?? true}
+          >
+            <Radio.Group style={{ width: "50%" }}>
+              <Radio.Button value={true} style={{ width: "50%" }}>
+                Yes
+              </Radio.Button>
+              <Radio.Button value={false} style={{ width: "50%" }}>
+                No
+              </Radio.Button>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item
             label="Kms Driven"
             name="kmsDriven"
@@ -124,7 +209,7 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
             rules={[
               ({}) => ({
                 validator() {
-                  if (!imageUrl) {
+                  if (imageUrl?.length === 0) {
                     return Promise.reject(
                       "Please upload an image file or provide an image URL!"
                     );
@@ -134,10 +219,11 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
               }),
             ]}
           >
-            <CsUploadImage
+            <CsMulImageUpload
               imageUrl={imageUrl}
               imageUrlChange={imageUrlChange}
               isImageUploading={setLoading}
+              removeImage={removeImage}
             />
           </Form.Item>
           <Form.Item style={{ margin: "2rem 0 0 0" }}>

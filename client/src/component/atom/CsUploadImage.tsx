@@ -1,7 +1,7 @@
 import { message, Upload, UploadFile } from "antd";
 import axios from "axios";
 import { useState } from "react";
-import { ref5 } from "../../container/dashboard/profile";
+
 import { useAppSelector } from "../../store";
 
 const CsImageUpload = ({ imageUrl, imageUrlChange, isImageUploading }: any) => {
@@ -20,7 +20,10 @@ const CsImageUpload = ({ imageUrl, imageUrlChange, isImageUploading }: any) => {
   );
 
   async function beforeUpload(file: File) {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    const isJpgOrPng =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/webp";
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
     }
@@ -92,7 +95,7 @@ const CsImageUpload = ({ imageUrl, imageUrlChange, isImageUploading }: any) => {
         beforeUpload={beforeUpload}
         maxCount={1}
         onRemove={onRemove}
-        accept=".png, .jpg"
+        accept=".png, .jpg, .webp"
       >
         {fileList.length < 1 && "+ Upload"}
       </Upload>

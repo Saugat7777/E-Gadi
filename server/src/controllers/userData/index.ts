@@ -9,13 +9,9 @@ export const getCurrentUser = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const token = req.header("x-auth-token");
-    const userData: any = jwt.verify(
-      token as string,
-      process.env.JWT_SECRET as string
-    );
+    const { id, full_name } = (req as any).user;
 
-    const user: any | null = await User.findById(userData?.id);
+    const user: any | null = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found", data: {} });
     }
@@ -33,13 +29,9 @@ export const getCurrentUserAllData = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const token = req.header("x-auth-token");
-    const userData: any = jwt.verify(
-      token as string,
-      process.env.JWT_SECRET as string
-    );
+    const { id, full_name } = (req as any).user;
 
-    const user: any | null = await User.findById(userData?.id);
+    const user: any | null = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found", data: {} });
     }

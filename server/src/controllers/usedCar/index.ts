@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { uid } from "uid";
 import UsedCar from "../../models/UsedCar";
 import User from "../../models/User";
 import { IUsedCar, IUser } from "../../types";
@@ -10,7 +11,7 @@ export const getUsedCars = async (
 ): Promise<Response> => {
   try {
     const usedCars: IUsedCar[] = await UsedCar.find();
-    console.log(req);
+
     return res
       .status(200)
       .json({ message: Generic_Msg.Get_All, data: usedCars });
@@ -59,6 +60,10 @@ export const addUsedCar = async (
       address,
       imageURL,
       description,
+      condition,
+      modification,
+      negotiability,
+      accidentHistory,
     } = req.body as Pick<
       IUsedCar,
       | "carBrand"
@@ -69,6 +74,10 @@ export const addUsedCar = async (
       | "address"
       | "imageURL"
       | "description"
+      | "condition"
+      | "modification"
+      | "negotiability"
+      | "accidentHistory"
     >;
 
     const { id: creatorId } = (req as any)?.user;
@@ -85,7 +94,12 @@ export const addUsedCar = async (
       address,
       imageURL,
       description,
+      condition,
+      modification,
+      negotiability,
+      accidentHistory,
       createdBy: creatorId,
+      slug: uid(),
     });
 
     // adding user info
@@ -94,6 +108,7 @@ export const addUsedCar = async (
 
     data["sellerName"] = user?.full_name;
     data["contactNumber"] = user?.contactNumber;
+    data["socialMedia"] = user?.socialMedia;
 
     const addedUsedCar: IUsedCar | null = await data.save();
 

@@ -10,6 +10,7 @@ interface ISliceState {
   loggedInUser: object | null;
   showLoginModal: boolean;
   navigatePath: string;
+  loginMethod: string;
 }
 
 const initialState: ISliceState = {
@@ -18,6 +19,7 @@ const initialState: ISliceState = {
   accessToken: obtainToken,
   showLoginModal: false,
   navigatePath: obtainNavigatePath,
+  loginMethod: localStorage.getItem("LOGIN_METHOD") as string,
 };
 
 const authSlice = createSlice({
@@ -64,8 +66,24 @@ const authSlice = createSlice({
         localStorage.removeItem("loggedInUser");
         localStorage.setItem("accessToken", payload?.accessToken);
         localStorage.setItem("loggedInUser", JSON.stringify(payload?.data));
+        localStorage.setItem("LOGIN_METHOD", "SERVER");
         state.accessToken = payload?.accessToken;
-
+        state.loggedInUser = payload?.data;
+        state.loginMethod = "SERVER";
+        state.showLoginModal = false;
+      }
+    );
+    builder.addMatcher(
+      authAPI.endpoints.loginWithGoogle.matchFulfilled,
+      (state, { payload }) => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("loggedInUser");
+        localStorage.setItem("accessToken", payload?.accessToken);
+        localStorage.setItem("loggedInUser", JSON.stringify(payload?.data));
+        localStorage.setItem("LOGIN_METHOD", "GOOGLE");
+        state.loggedInUser = payload?.data;
+        state.accessToken = payload?.accessToken;
+        state.loginMethod = "GOOGLE";
         state.showLoginModal = false;
       }
     );
@@ -76,8 +94,10 @@ const authSlice = createSlice({
         localStorage.removeItem("loggedInUser");
         localStorage.setItem("accessToken", payload?.accessToken);
         localStorage.setItem("loggedInUser", JSON.stringify(payload?.data));
+        localStorage.setItem("LOGIN_METHOD", "SERVER");
         state.accessToken = payload?.accessToken;
-
+        state.loggedInUser = payload?.data;
+        state.loginMethod = "SERVER";
         state.showLoginModal = false;
       }
     );

@@ -1,7 +1,6 @@
 import { Spin } from "antd";
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useGetCurrentUserQuery } from "../services/userDataAPI";
 
 interface RolePermission {
   children: React.ReactNode;

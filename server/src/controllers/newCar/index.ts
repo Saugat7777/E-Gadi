@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { uid } from "uid";
 import NewCar from "../../models/NewCar";
 import { INewCar } from "../../types";
 import { Generic_Msg } from "../../utils/constant";
@@ -59,6 +60,10 @@ export const addNewCar = async (
       range,
       imageURL,
       description,
+      batteryCapacity,
+      madeYear,
+      groundClearance,
+      extraFeatures,
     } = req.body as Pick<
       INewCar,
       | "carBrand"
@@ -71,6 +76,10 @@ export const addNewCar = async (
       | "seatingCapacity"
       | "price"
       | "imageURL"
+      | "batteryCapacity"
+      | "madeYear"
+      | "groundClearance"
+      | "extraFeatures"
     >;
 
     const { id: creatorId } = (req as any)?.user;
@@ -89,7 +98,15 @@ export const addNewCar = async (
       range,
       imageURL,
       description,
+      batteryCapacity,
+      madeYear,
+      groundClearance,
+      extraFeatures,
+      totalRating: 0,
+      totalUserRated: [],
+      rating: 0,
       createdBy: creatorId,
+      identity: uid(),
     });
 
     const addedNewCar: INewCar | null = await data.save();
@@ -149,6 +166,54 @@ export const deleteNewCar = async (
     return res.status(200).json({
       message: Generic_Msg.Delete,
       data: deletedNewCar,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: Generic_Msg.Server_Error, error: error });
+  }
+};
+
+export const rateNewCar = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const {
+      params: { id },
+    } = req;
+    const { rating: userRating, email } = req.body;
+
+    if (!userRating || !email)
+      return res.status(400).json({ message: "Select rating value", data: {} });
+
+    const newCarData: INewCar | null = await NewCar.findById(id);
+    if (!newCarData)
+      return res.status(404).json({ message: "Car not found", data: {} });
+
+    const { totalRating, totalUserRated, rating } = newCarData;
+
+    if (totalUserRated.includes(email)) {
+      return res
+        .status(400)
+        .json({ message: "Already rated this car !", data: {} });
+    }
+
+    totalUserRated.push(email);
+    const accTotalRating = totalRating + userRating;
+    const accRating = accTotalRating / totalUserRated?.length;
+
+    const updatedNewCar: INewCar | null = await NewCar.findByIdAndUpdate(
+      { _id: id },
+      { totalUserRated, totalRating: accTotalRating, rating: accRating }
+    );
+
+    if (!updatedNewCar)
+      return res.status(404).json({ message: "Car not found", data: {} });
+
+    return res.status(200).json({
+      message: "Thank you for rating car !",
+      data: updatedNewCar,
     });
   } catch (error) {
     return res

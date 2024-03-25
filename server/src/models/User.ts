@@ -14,7 +14,6 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -33,6 +32,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       type: String,
     },
     verified: {
+      type: Boolean,
+    },
+    passwordVerified: {
       type: Boolean,
     },
   },

@@ -3,17 +3,18 @@ import {
   MailOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Flex, Layout, Row, Typography } from "antd";
+import { Button, Col, Flex, Grid, Layout, Row, Typography } from "antd";
 const Footer = () => {
+  const screen = Grid.useBreakpoint();
   const { Footer } = Layout;
   return (
     <Footer
       style={{ textAlign: "center", background: "white", marginTop: "8rem" }}
     >
-      <Row justify={"center"} align={"top"} style={{ marginTop: "3rem" }}>
-        <Col md={{ span: 18 }} lg={{ span: 17 }}>
-          <Flex justify="space-between">
-            <Flex vertical align="start" justify="start">
+      <Row justify={"center"} align={"top"} style={{ marginTop: "1rem" }}>
+        <Col span={17}>
+          <Flex justify="center">
+            <Flex vertical align="center" justify="center">
               <Typography.Text strong>Contact Us</Typography.Text>
               <Typography.Paragraph>
                 If you want to contact, you can contact us from Sunday - Friday
@@ -22,24 +23,29 @@ const Footer = () => {
             </Flex>
           </Flex>
         </Col>
-        <Col md={{ span: 18 }} lg={{ span: 17 }}>
-          <Flex justify="space-between" align="start" style={{ width: "100%" }}>
-            <Flex vertical align="start">
-              <Flex gap={10}>
+        <Col span={17}>
+          <Flex
+            justify={screen?.xs ? "center" : "space-between"}
+            align="center"
+            style={{ width: "100%" }}
+            wrap="wrap"
+          >
+            <Flex vertical align={screen?.xs ? "center" : "start"} gap={9}>
+              <Flex gap={10} wrap="wrap" justify="center">
                 <EnvironmentOutlined />
                 <Typography.Text strong>Lalitpur, Nepal</Typography.Text>
               </Flex>
-              <Flex gap={10}>
+              <Flex gap={10} justify="center">
                 <PhoneOutlined rotate={90} />
                 <Typography.Text strong>9848449577</Typography.Text>
               </Flex>
-              <Flex gap={10}>
+              <Flex gap={10} wrap="wrap" justify="center">
                 <MailOutlined />
                 <Typography.Text strong>customercare@egadi.com</Typography.Text>
               </Flex>
             </Flex>
 
-            <Flex vertical align="end">
+            <Flex vertical align={screen?.xs ? "center" : "end"}>
               <Button type="link">About Us</Button>
               <Button type="link">Contact</Button>
               <Button type="link">Privacy Policy</Button>

@@ -11,12 +11,11 @@ import {
   handleShowLoginModal,
 } from "../../features/authSlice";
 import { useRegisterUserMutation } from "../../services/user";
-import { useGetCurrentUserQuery } from "../../services/userDataAPI";
 import { useAppDispatch, useAppSelector } from "../../store";
+import CsGoogleLogin from "./CsGoogleLogin";
 
 const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
-  const { refetch } = useGetCurrentUserQuery();
   const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.auth);
 
@@ -39,7 +38,7 @@ const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
     if (accessToken?.length > 0) {
       dispatch(handleShowLoginModal());
     }
-    refetch();
+    // refetch();
     setTimeout(() => {
       dispatch(handelNavigatePath());
     }, 2000);
@@ -79,6 +78,7 @@ const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
             },
             {
               required: true,
+              message: "Please enter email",
             },
           ]}
           style={{ marginTop: ".4rem" }}
@@ -91,7 +91,12 @@ const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
         </Form.Item>
         <Form.Item
           name="regPassword"
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              message: "Please enter password",
+            },
+          ]}
           validateTrigger="onBlur"
           style={{ marginTop: ".4rem" }}
         >
@@ -105,7 +110,7 @@ const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
         <Form.Item
           name="confirmRegPassword"
           style={{ marginTop: ".4rem" }}
-          dependencies={["password"]}
+          dependencies={["regPassword"]}
           hasFeedback
           rules={[
             {
@@ -146,8 +151,8 @@ const RegisterForm = ({ form, setVisibleRegisterForm }: any) => {
         <Typography.Text>OR</Typography.Text>{" "}
       </Divider>
       <Flex align="center" vertical gap={20}>
-        <Button>Login with Google</Button>
-        <div onClick={() => setVisibleRegisterForm(false)}>
+        <CsGoogleLogin />
+        <div onClick={() => setVisibleRegisterForm("LOGIN")}>
           <Typography.Text>
             Already have an account? <Typography.Link>Login</Typography.Link>{" "}
           </Typography.Text>

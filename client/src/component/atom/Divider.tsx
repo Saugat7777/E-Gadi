@@ -1,13 +1,13 @@
-import { Col, Divider, Flex, Row, Typography } from "antd";
+import { Col, Divider, Flex, Grid, Row, Typography } from "antd";
 import { Fragment } from "react";
 
 interface CsDivider {
   dividerSize: number;
   title: string;
 }
-console.log("first")
 
 const CsDivider = ({ dividerSize, title }: CsDivider) => {
+  const screen = Grid.useBreakpoint();
   return (
     <Fragment>
       <Row justify={"center"} style={{ marginTop: "1rem" }}>
@@ -16,7 +16,7 @@ const CsDivider = ({ dividerSize, title }: CsDivider) => {
             style={{
               background: "#ff8e3c",
               borderRadius: "19px",
-              height: ".4rem",
+              height: ".3rem",
             }}
           />
         </Col>
@@ -25,7 +25,9 @@ const CsDivider = ({ dividerSize, title }: CsDivider) => {
       <Row justify={"center"} style={{ marginTop: "-2.3rem" }}>
         <Col span={12}>
           <Flex justify="center">
-            <Typography.Title level={3}>{title}</Typography.Title>
+            <Typography.Title level={screen?.xs ? 4 : 3}>
+              {title}
+            </Typography.Title>
           </Flex>
         </Col>
       </Row>

@@ -31,64 +31,48 @@ const UsedCars = () => {
       {
         title: "Brand",
         dataIndex: "carBrand",
-        key: "car_brand",
-        ellipsis: true,
-        width: "20%",
+        key: "carBrand",
       },
       {
         title: "Model",
         dataIndex: "carModel",
         key: "carModel",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Seller Name",
         dataIndex: "sellerName",
         key: "sellerName",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Contact",
         dataIndex: "contactNumber",
         key: "contactNumber",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Location",
         dataIndex: "address",
         key: "address",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Description",
         dataIndex: "description",
         key: "description",
-        ellipsis: true,
-        width: "25%",
       },
       {
         title: "Created",
         dataIndex: "createdAt",
         key: "createdAt",
-        ellipsis: true,
-        width: "25%",
         render: (value: string) => moment(value).format("LL"),
       },
       {
         title: "Picture",
         dataIndex: "imageURL",
         key: "imageURL",
-        width: "20%",
-        ellipsis: true,
         render: (item) => {
           if (item) {
             return (
               <img
-                src={item}
+                src={item[0]}
                 alt="Car image"
                 style={{ width: "50px", height: "auto" }}
               />
@@ -107,7 +91,6 @@ const UsedCars = () => {
       {
         title: "Action",
         key: "action",
-        width: "15%",
         render: (_: any, record: any) => {
           return (
             <Space>
@@ -144,7 +127,11 @@ const UsedCars = () => {
 
   return (
     <Spin spinning={isLoading}>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        style={{ overflowX: "scroll" }}
+      />
 
       <CsDeleteConfirmation
         visible={visibleDeleteConfirmation}

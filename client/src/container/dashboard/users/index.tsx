@@ -29,44 +29,34 @@ const Users = () => {
         title: "Full Name",
         dataIndex: "full_name",
         key: "full_name",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Email",
         dataIndex: "email",
         key: "email",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Contact",
         dataIndex: "contactNumber",
         key: "contactNumber",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Location",
         dataIndex: "address",
         key: "address",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Joined at",
         dataIndex: "createdAt",
         key: "createdAt",
-        ellipsis: true,
-        width: "25%",
+
         render: (value: string) => moment(value).format("LL"),
       },
       {
         title: "Picture",
         dataIndex: "imageURL",
         key: "imageURL",
-        width: "20%",
-        ellipsis: true,
+
         render: (item) => {
           if (item) {
             return (
@@ -90,7 +80,7 @@ const Users = () => {
       {
         title: "Action",
         key: "action",
-        width: "15%",
+
         render: (_: any, record: any) => {
           return (
             <Space>
@@ -127,7 +117,11 @@ const Users = () => {
 
   return (
     <Spin spinning={isLoading}>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        style={{ overflowX: "scroll" }}
+      />
 
       <CsDeleteConfirmation
         visible={visibleDeleteConfirmation}

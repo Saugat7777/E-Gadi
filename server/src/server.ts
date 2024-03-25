@@ -4,7 +4,10 @@ import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import { authMiddleware } from "./middleware/auth";
 import authRouter from "./routes/auth";
+import compareCarRouter from "./routes/compareCar";
 import newCarRouter from "./routes/newCar";
+import otpVerificationRouter from "./routes/otpVerification";
+import salesGroundRouter from "./routes/salesground";
 import uploadImageRouter from "./routes/upload";
 import usedCarRouter from "./routes/usedCar";
 import userRouter from "./routes/user";
@@ -17,7 +20,7 @@ const PORT: string | number = process.env.PORT || 3000;
 app.use(
   cors({
     origin: "http://localhost:4444",
-    allowedHeaders: ["Content-Type", "x-auth-token"],
+    allowedHeaders: ["Content-Type", "x-auth-token", "google-auth-token"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
@@ -27,6 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/auth", userRouter);
 app.use("/api/upload", uploadImageRouter);
+app.use("/api/compare-car", compareCarRouter);
+app.use("/api/salesground", salesGroundRouter);
+app.use("/api/otp", otpVerificationRouter);
 app.use(authMiddleware);
 app.use("/api/user/", userDataRouter);
 app.use("/api/car", newCarRouter);

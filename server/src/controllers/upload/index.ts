@@ -33,3 +33,28 @@ export const getImage = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Error! ", error });
   }
 };
+
+export const uploadImages = async (req: Request, res: Response) => {
+  try {
+    const uploadedFiles = req.files as Express.Multer.File[];
+
+    if (uploadedFiles?.length === 0)
+      return res
+        .status(200)
+        .json({ message: "Please, upload at least one photo" });
+
+    if (uploadedFiles !== undefined && uploadedFiles.length > 0) {
+      let fileUrl: string[] = [];
+      const prefix = `${process.env.BASE_URL}/upload/image/`;
+      uploadedFiles.forEach((file) => {
+        fileUrl.push(`${prefix}${file.filename}`);
+      });
+
+      return res
+        .status(200)
+        .json({ message: "File uploaded sucessfully !", data: { fileUrl } });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error!", error });
+  }
+};

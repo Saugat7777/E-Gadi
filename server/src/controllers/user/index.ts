@@ -46,6 +46,7 @@ export const registerUser = async (
       socialMedia,
       role: matchedAdminEmail ? "admin" : "user",
       verified: false,
+      passwordVerified: true,
     });
 
     const savedUserData = await userData.save();
@@ -153,6 +154,38 @@ export const updateUser = async (
       } else {
         return res.status(401).json({ message: userMsg.notValid });
       }
+    } else if (password) {
+      const saltRounds = 10;
+      const hashedPassword = await encryptPassword(password, saltRounds);
+      const updatedUser: any = await User.findByIdAndUpdate(
+        { _id: id },
+        {
+          full_name,
+          email,
+          password: hashedPassword,
+          address,
+          contactNumber,
+          role,
+          socialMedia,
+          imageURL,
+          verified: true,
+          passwordVerified: true,
+        }
+      ).select("-password");
+
+      if (!updatedUser)
+        return res.status(400).json({ message: "User not found", data: {} });
+
+      // Get userData without password
+      const userDataWithoutPassword = {
+        updatedUser,
+        password: undefined,
+      };
+
+      return res.status(200).json({
+        message: "Sucessfully, user updated",
+        data: userDataWithoutPassword,
+      });
     } else {
       const updatedUser: any = await User.findByIdAndUpdate(
         { _id: id },

@@ -20,7 +20,7 @@ const CsModal: React.FC<ICsModalProps> = ({
   const dispatch = useAppDispatch();
 
   const handleCancel = () => {
-    setVisibleRegisterForm(false);
+    setVisibleRegisterForm("LOGIN");
     dispatch(handleShowLoginModal());
   };
 

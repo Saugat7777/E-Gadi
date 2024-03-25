@@ -31,42 +31,32 @@ const NewElectricCar: React.FC = () => {
         title: "Brand",
         dataIndex: "carBrand",
         key: "car_brand",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Model",
         dataIndex: "carModel",
         key: "car_model",
-        ellipsis: true,
-        width: "20%",
       },
       {
         title: "Description",
         dataIndex: "description",
         key: "description",
-        ellipsis: true,
-        width: "25%",
       },
       {
         title: "Created",
         dataIndex: "createdAt",
         key: "createdAt",
-        ellipsis: true,
-        width: "25%",
         render: (value: string) => moment(value).format("YYYY-MM-DD"),
       },
       {
         title: "Picture",
         dataIndex: "imageURL",
         key: "imageURL",
-        width: "20%",
-        ellipsis: true,
         render: (item) => {
           if (item) {
             return (
               <img
-                src={item}
+                src={item[0]}
                 alt="New car image"
                 style={{ width: "50px", height: "auto" }}
               />
@@ -84,13 +74,11 @@ const NewElectricCar: React.FC = () => {
       },
       {
         title: "Status",
-        width: "10%",
         render: () => <Tag color="success">Active</Tag>,
       },
       {
         title: "Action",
         key: "action",
-        width: "15%",
         render: (_: any, record: any) => {
           return (
             <Space>
@@ -147,7 +135,11 @@ const NewElectricCar: React.FC = () => {
         </Button>
       </ViewHeader>
 
-      <Table dataSource={data} columns={columns} />
+      <Table
+        dataSource={data}
+        columns={columns}
+        style={{ overflowY: "scroll" }}
+      />
       <CsDeleteConfirmation
         visible={visibleDeleteConfirmation}
         handleDelete={handleSubmitDeleteConfirmation}

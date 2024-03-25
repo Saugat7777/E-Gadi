@@ -1,29 +1,67 @@
-import { Button, Col, Flex, Form, Input, InputNumber, Row } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Flex,
+  Form,
+  Grid,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+} from "antd";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CsUploadImage from "../../../component/atom/CsUploadImage";
+import CsMulImageUpload from "../../../component/atom/CsMulUploadImage";
+
+import moment from "moment";
+import { uid } from "uid";
 import {
   usePostNewCarMutation,
   useUpdateNewCarMutation,
 } from "../../../services/newCarAPI";
+import { IMulImage } from "../sell-your-car/YourCarForm";
+
+const config = {
+  rules: [
+    {
+      type: "object" as const,
+      required: true,
+      message: "Please enter made year",
+    },
+  ],
+};
 
 const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
   const navigate = useNavigate();
+  const screen = Grid.useBreakpoint();
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState(initialValues?.imageURL ?? "");
+  const [imageUrl, setImageUrl] = useState<IMulImage[]>(
+    initialValues
+      ? initialValues?.imageURL?.map((url: string) => ({ url, uid: uid() }))
+      : []
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   const [postNewCar, { isLoading: postLoading }] = usePostNewCarMutation();
   const [updateNewCar, { isLoading: updateLoading }] =
     useUpdateNewCarMutation();
 
-  function imageUrlChange(url: any) {
-    setImageUrl(url);
+  function imageUrlChange(url: string, uid: string) {
+    setImageUrl((prevValues) => [...prevValues, { url, uid }]);
+  }
+
+  function removeImage(file: any) {
+    setImageUrl((prevValues) =>
+      prevValues.filter((value) => value.uid !== file.uid)
+    );
   }
 
   const onFinish = (form: any) => {
-    form.imageURL = imageUrl;
+    form.imageURL = imageUrl.map((image) => image.url);
+    form.madeYear = form.madeYear.format("YYYY");
+
     if (!!initialValues) {
       try {
         updateNewCar({ formData: form, id: initialValues?._id });
@@ -49,7 +87,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
       scrollToFirstError
     >
       <Row>
-        <Col span={12}>
+        <Col span={screen?.xs ? 24 : 12}>
           <Form.Item
             label="Brand Name"
             name="carBrand"
@@ -83,6 +121,30 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             <Input placeholder="Enter a body styles" />
           </Form.Item>
           <Form.Item
+            label="Made Year"
+            name="madeYear"
+            initialValue={
+              initialValues?.madeYear
+                ? moment(initialValues?.madeYear, "YYYY")
+                : ""
+            }
+            {...config}
+          >
+            <DatePicker picker="year" format={"YYYY"} />
+          </Form.Item>
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[{ required: true, message: "Please, enter a price" }]}
+            initialValue={initialValues?.price ?? ""}
+          >
+            <InputNumber
+              addonBefore={<span>Rs.</span>}
+              min={100000}
+              step={100000}
+            />
+          </Form.Item>{" "}
+          <Form.Item
             label="Range"
             name="range"
             rules={[{ required: true, message: "Please, enter a range" }]}
@@ -105,6 +167,32 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             />
           </Form.Item>
           <Form.Item
+            label="Ground Clearance"
+            name="groundClearance"
+            rules={[
+              { required: true, message: "Please, enter ground clearance" },
+            ]}
+            initialValue={initialValues?.groundClearance ?? ""}
+          >
+            <InputNumber
+              addonAfter={<span>inch</span>}
+              placeholder="Enter ground clearance"
+            />
+          </Form.Item>{" "}
+          <Form.Item
+            label="Battery Capacity"
+            name="batteryCapacity"
+            rules={[
+              { required: true, message: "Please, enter battery capacity" },
+            ]}
+            initialValue={initialValues?.batteryCapacity ?? ""}
+          >
+            <InputNumber
+              placeholder="Enter battery capacity"
+              addonAfter={<span>kWh</span>}
+            />
+          </Form.Item>
+          <Form.Item
             label="Charging 0 to 100 in"
             name="charging_0_to_100"
             rules={[
@@ -114,7 +202,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           >
             <InputNumber
               placeholder="Enter charging 0 to 100 in"
-              addonAfter={<span>hr</span>}
+              addonAfter={<span>hr </span>}
             />
           </Form.Item>
           <Form.Item
@@ -131,16 +219,14 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             />
           </Form.Item>
           <Form.Item
-            label="Price"
-            name="price"
-            rules={[{ required: true, message: "Please, enter a price" }]}
-            initialValue={initialValues?.price ?? ""}
+            label="Extra features"
+            name="extraFeatures"
+            rules={[
+              { required: true, message: "Please, enter extra features" },
+            ]}
+            initialValue={initialValues?.extraFeatures ?? ""}
           >
-            <InputNumber
-              addonBefore={<span>Rs.</span>}
-              min={100000}
-              step={100000}
-            />
+            <Input placeholder="Enter extra features" />
           </Form.Item>{" "}
           <Form.Item
             label={
@@ -156,7 +242,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             rules={[
               ({}) => ({
                 validator() {
-                  if (!imageUrl) {
+                  if (imageUrl?.length === 0) {
                     return Promise.reject(
                       "Please upload an image file or provide an image URL!"
                     );
@@ -166,7 +252,8 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
               }),
             ]}
           >
-            <CsUploadImage
+            <CsMulImageUpload
+              removeImage={removeImage}
               imageUrl={imageUrl}
               imageUrlChange={imageUrlChange}
               isImageUploading={setLoading}

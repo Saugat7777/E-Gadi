@@ -61,7 +61,7 @@ const Footer = () => {
             marginTop: "3rem",
           }}
         >
-          E-Gadi ©{new Date().getFullYear()} Crafted by ConfuseSuon
+          E-Gadi ©{new Date().getFullYear()} Crafted by SmilingHuman
         </Col>
       </Row>
     </Footer>

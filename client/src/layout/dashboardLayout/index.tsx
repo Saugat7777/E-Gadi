@@ -198,7 +198,7 @@ const DashboardLayout: React.FC = () => {
             <Typography.Text
               style={{ fontSize: screen?.xs ? ".6rem" : ".8rem" }}
             >
-              E-Gadi ©{new Date().getFullYear()} Created by ConfuseSuon
+              E-Gadi ©{new Date().getFullYear()} Created by SmilingHumam
             </Typography.Text>
           </Flex>
         </Footer>

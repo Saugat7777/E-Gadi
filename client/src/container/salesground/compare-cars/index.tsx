@@ -91,7 +91,7 @@ const CompareCars = () => {
                   textAlign: "center",
                 }}
               >
-                Confused, let us help you decide what car is best suited for you
+                Confused!!! let us help you decide what car is best suited for you
                 and your family.
               </Typography.Paragraph>
             </Col>
@@ -981,7 +981,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {secondCardData[0]?.extraFeatures}
+                    {firstCardData[0]?.extraFeatures}
                   </Typography.Text>
                 </Col>{" "}
                 <Col

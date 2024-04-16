@@ -130,10 +130,18 @@ const Profile = () => {
                       <Form.Item
                         name="facebook"
                         rules={[
-                          {
-                            required: true,
-                            message: "Please, enter facebook link",
-                          },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value && !getFieldValue("instagram")) {
+                                return Promise.reject(
+                                  new Error(
+                                    "Please enter either a facebook or instagram link"
+                                  )
+                                );
+                              }
+                              return Promise.resolve();
+                            },
+                          }),
                         ]}
                         initialValue={data?.socialMedia[0]?.facebook ?? ""}
                       >
@@ -144,10 +152,18 @@ const Profile = () => {
                       <Form.Item
                         name="instagram"
                         rules={[
-                          {
-                            required: true,
-                            message: "Please, enter instagram link",
-                          },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value && !getFieldValue("facebook")) {
+                                return Promise.reject(
+                                  new Error(
+                                    "Please enter either a facebook or instagram link"
+                                  )
+                                );
+                              }
+                              return Promise.resolve();
+                            },
+                          }),
                         ]}
                         initialValue={data?.socialMedia[0]?.instagram ?? ""}
                       >

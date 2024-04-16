@@ -151,7 +151,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             initialValue={initialValues?.range ?? ""}
           >
             <InputNumber
-              addonAfter={<span>miles</span>}
+              addonAfter={<span>kms</span>}
               placeholder="Enter range"
             />
           </Form.Item>{" "}
@@ -163,7 +163,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           >
             <InputNumber
               placeholder="Enter top speed"
-              addonAfter={<span>mph</span>}
+              addonAfter={<span>kph</span>}
             />
           </Form.Item>
           <Form.Item
@@ -175,7 +175,7 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             initialValue={initialValues?.groundClearance ?? ""}
           >
             <InputNumber
-              addonAfter={<span>inch</span>}
+              addonAfter={<span>mm</span>}
               placeholder="Enter ground clearance"
             />
           </Form.Item>{" "}

@@ -191,22 +191,27 @@ const Home: React.FC = () => {
                 >
                   <Typography.Title level={3}>About Us</Typography.Title>
                   <Typography.Paragraph>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has
+                  Welcome to E-Gadi, Nepal's premier destination for electric vehicles (EVs). 
+                  At E-Gadi, we're passionate about driving change towards a sustainable future.
+                  Our platform was born out of a vision to revolutionize the way Nepalese consumers 
+                  engage with transportation. With a deep commitment to environmental conservation 
+                  and technological innovation, we aim to make electric mobility accessible and 
+                  convenient for everyone in Nepal.
                   </Typography.Paragraph>
                   <Typography.Paragraph>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting
+                  What sets us apart is our dedication to providing
+                  a comprehensive marketplace for electric vehicles, where buyers and sellers can 
+                  connect seamlessly. Whether you're in search of a sleek electric sedan for 
+                  your daily commute or a rugged electric SUV for your off-road adventures, 
+                  E-Gadi has you covered.
+                  
                   </Typography.Paragraph>
                   <Typography.Paragraph>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has industry. Lorem Ipsum has been
+                  At E-Gadi, sustainability isn't just a buzzword – it's a way of life.
+                  Join us on this electrifying journey towards a greener, brighter tomorrow. 
+                  Together, let's drive change and make a lasting impact on Nepal's transportation landscape.
+
+                  Welcome to the future of mobility. Welcome to E-Gadi.
                   </Typography.Paragraph>
                 </Flex>
                 <Flex>

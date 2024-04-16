@@ -12,6 +12,7 @@ export const userDataAPI = apiSlice.injectEndpoints({
       transformErrorResponse(baseQueryReturnValue: any) {
         return baseQueryReturnValue?.data;
       },
+      providesTags: ["UserAuth"],
     }),
     getCurrentUserAllData: builder.query<any, void>({
       query: () => "/user/current-user-allData",

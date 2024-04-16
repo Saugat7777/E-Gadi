@@ -19,7 +19,8 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { NavigateFunction, Outlet, useNavigate } from "react-router-dom";
-import logo from "../../assets/carousel/logo.png";
+import logo from "../../assets/logo/logo.png";
+import logoIcon from "../../assets/logo/logoIcon.png";
 import { handleLogout } from "../../features/authSlice";
 import { useGetCurrentUserQuery } from "../../services/userDataAPI";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -124,8 +125,18 @@ const DashboardLayout: React.FC = () => {
             " rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px",
         }}
       >
-        <Flex style={{ marginBottom: "1rem" }}>
-          <img src={logo} style={{ height: "5rem" }} />
+        <Flex
+          style={{
+            margin: ".6rem 0",
+            boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
+            height: "3.92rem",
+          }}
+          justify={collapsed ? "center" : "flex-start"}
+        >
+          <img
+            src={collapsed ? logoIcon : logo}
+            style={{ height: "3rem", cursor: "pointer" }}
+          />
         </Flex>
         <Menu
           defaultSelectedKeys={["1"]}
@@ -198,7 +209,7 @@ const DashboardLayout: React.FC = () => {
             <Typography.Text
               style={{ fontSize: screen?.xs ? ".6rem" : ".8rem" }}
             >
-              E-Gadi ©{new Date().getFullYear()} Created by SmilingHumam
+              E-Gadi ©{new Date().getFullYear()} Created by Saugat Khadka
             </Typography.Text>
           </Flex>
         </Footer>

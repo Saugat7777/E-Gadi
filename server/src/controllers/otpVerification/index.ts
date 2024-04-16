@@ -26,7 +26,7 @@ export const generateOtp = async (
       type: "forgotPassword",
     });
     const addedOtp = await data.save();
-    const to = email;
+    const to = email ;
     const subject = "E-Gadi -- Reset Your Password";
     const from = "egadi@gmail.com";
     const html = `<div><h2>Password Reset</h2>

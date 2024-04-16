@@ -255,7 +255,7 @@ const NewCarById = () => {
                           color: "black",
                         }}
                       >
-                        {newCarData?.range} miles
+                        {newCarData?.range} kms
                       </Typography.Text>
                     </Flex>
                     <Flex
@@ -279,7 +279,7 @@ const NewCarById = () => {
                           color: "black",
                         }}
                       >
-                        {newCarData?.topSpeed} mph
+                        {newCarData?.topSpeed} kph
                       </Typography.Text>
                     </Flex>
                     <Flex
@@ -348,7 +348,7 @@ const NewCarById = () => {
                           fontWeight: "400",
                         }}
                       >
-                        {newCarData?.groundClearance} inch
+                        {newCarData?.groundClearance} mm
                       </Typography.Text>
                     </Flex>
                     <Flex>

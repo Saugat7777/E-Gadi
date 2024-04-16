@@ -4,10 +4,13 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Card, Flex, Grid, Statistic } from "antd";
-import { useEffect, useMemo } from "react";
+import { Card, Col, Divider, Flex, Grid, Row, Statistic } from "antd";
+import { Fragment, useEffect, useMemo } from "react";
 import { handleBreadCumbs } from "../../features/globalSlice";
 
+import NewCarCard from "../../component/organism/NewCarCard";
+import UsedCarCard from "../../component/organism/UsedCarCard";
+import UserCard from "../../component/organism/UserCard";
 import { useGetNewCarsQuery } from "../../services/newCarAPI";
 import { useGetUsedCarsQuery } from "../../services/usedCar";
 import { useGetUsersQuery } from "../../services/user";
@@ -46,72 +49,148 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Flex wrap="wrap" gap={screen?.xs ? 10 : 50}>
-      <Card
-        style={{
-          flex: "1",
-          boxShadow:
-            "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-        }}
-      >
-        <Flex align="center" justify="space-between" gap={"large"}>
-          <Statistic
-            title="Total Users"
-            value={totalCount?.user}
-            loading={loading}
-            prefix={<TeamOutlined style={{ marginRight: ".3rem" }} />}
-          />
-        </Flex>
+    <Fragment>
+      <Card>
+        <Divider orientationMargin={0} orientation="left">
+          Statisctic
+        </Divider>
+        <Row gutter={[50, 10]} wrap>
+          <Col span={screen?.xs ? 12 : 6}>
+            <div
+              style={{
+                padding: "1rem",
+                boxShadow: "rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px",
+                borderRadius: "10px",
+              }}
+            >
+              <Statistic
+                title="Total Users"
+                value={totalCount?.user}
+                loading={loading}
+                prefix={
+                  <TeamOutlined
+                    style={{ marginRight: ".3rem", color: "#fc8e3c" }}
+                  />
+                }
+              />
+            </div>
+          </Col>
+          <Col span={screen?.xs ? 12 : 6}>
+            <div
+              style={{
+                padding: "1rem",
+                boxShadow: "rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px",
+                borderRadius: "10px",
+              }}
+            >
+              <Statistic
+                title="New Cars"
+                value={totalCount?.newCar}
+                loading={loading}
+                prefix={
+                  <CarOutlined
+                    style={{ marginRight: ".3rem", color: "#fc8e3c" }}
+                  />
+                }
+              />
+            </div>
+          </Col>
+          <Col span={screen?.xs ? 12 : 6}>
+            <div
+              style={{
+                padding: "1rem",
+                boxShadow: "rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px",
+                borderRadius: "10px",
+              }}
+            >
+              <Statistic
+                title="Used Cars"
+                value={totalCount?.usedCar}
+                loading={loading}
+                prefix={
+                  <TagOutlined
+                    style={{ marginRight: ".3rem", color: "#fc8e3c" }}
+                  />
+                }
+              />
+            </div>
+          </Col>
+          <Col span={screen?.xs ? 12 : 6}>
+            <div
+              style={{
+                padding: "1rem",
+                boxShadow: "rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px",
+                borderRadius: "10px",
+              }}
+            >
+              <Statistic
+                title="Active Users"
+                value={totalCount?.activeUser}
+                loading={loading}
+                prefix={
+                  <UserOutlined
+                    style={{ marginRight: ".3rem", color: "#fc8e3c" }}
+                  />
+                }
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={20}>
+          <Col span={screen?.xs ? 24 : 12} style={{ marginTop: "3rem" }}>
+            <Card
+              hoverable
+              title={
+                <span>
+                  Used Car{" "}
+                  <span style={{ fontWeight: "normal" }}>(Current Year)</span>
+                </span>
+              }
+            >
+              <Row>
+                <Col span={24}>
+                  <UsedCarCard usedCarData={usedCars ? usedCars : null} />
+                </Col>
+              </Row>
+            </Card>
+          </Col>{" "}
+          <Col span={screen?.xs ? 24 : 12} style={{ marginTop: "3rem" }}>
+            <Card
+              hoverable
+              title={
+                <span>
+                  User{" "}
+                  <span style={{ fontWeight: "normal" }}>(Current Year)</span>
+                </span>
+              }
+            >
+              <Row>
+                <Col span={24}>
+                  <UserCard userData={users ? users : null} />
+                </Col>
+              </Row>
+            </Card>
+          </Col>{" "}
+          <Col span={screen?.xs ? 24 : 12} style={{ marginTop: "3rem" }}>
+            <Card
+              hoverable
+              title={
+                <span>
+                  New Car{" "}
+                  <span style={{ fontWeight: "normal" }}>(Current Year)</span>
+                </span>
+              }
+            >
+              <Row>
+                <Col span={24}>
+                  <NewCarCard newCarData={newCars ? newCars : null} />
+                </Col>
+              </Row>
+            </Card>
+          </Col>{" "}
+        </Row>
       </Card>
-      <Card
-        style={{
-          flex: "1",
-          boxShadow:
-            "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-        }}
-      >
-        <Flex align="center" justify="space-between" gap={"large"}>
-          <Statistic
-            title="New Cars"
-            value={totalCount?.newCar}
-            loading={loading}
-            prefix={<CarOutlined style={{ marginRight: ".3rem" }} />}
-          />
-        </Flex>
-      </Card>{" "}
-      <Card
-        style={{
-          flex: "1",
-          boxShadow:
-            "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-        }}
-      >
-        <Flex align="center" justify="space-between" gap={"large"}>
-          <Statistic
-            title="Used Cars"
-            value={totalCount?.usedCar}
-            loading={loading}
-            prefix={<TagOutlined style={{ marginRight: ".3rem" }} />}
-          />
-        </Flex>
-      </Card>{" "}
-      <Card
-        style={{
-          flex: "1",
-          boxShadow:
-            "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-        }}
-      >
-        <Flex align="center" justify="space-between" gap={"large"}>
-          <Statistic
-            title="Active Users"
-            value={totalCount?.activeUser}
-            loading={loading}
-            prefix={<UserOutlined style={{ marginRight: ".3rem" }} />}
-          />
-        </Flex>
-      </Card>
-    </Flex>
+    </Fragment>
   );
 };
 

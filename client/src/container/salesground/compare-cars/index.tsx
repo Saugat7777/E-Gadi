@@ -91,7 +91,7 @@ const CompareCars = () => {
                   textAlign: "center",
                 }}
               >
-                Confused!!! let us help you decide what car is best suited for you
+                Are you Confused ? Let us help you decide what car is best suited for you
                 and your family.
               </Typography.Paragraph>
             </Col>
@@ -598,7 +598,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {firstCardData[0]?.range} miles
+                    {firstCardData[0]?.range} kms
                   </Typography.Text>
                 </Col>{" "}
                 <Col
@@ -612,7 +612,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {secondCardData[0]?.range} miles
+                    {secondCardData[0]?.range} kms
                   </Typography.Text>
                 </Col>
               </Row>
@@ -650,7 +650,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {firstCardData[0]?.topSpeed} mph
+                    {firstCardData[0]?.topSpeed} kph
                   </Typography.Text>
                 </Col>{" "}
                 <Col
@@ -664,7 +664,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {secondCardData[0]?.topSpeed} mph
+                    {secondCardData[0]?.topSpeed} kph
                   </Typography.Text>
                 </Col>
               </Row>
@@ -808,7 +808,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {firstCardData[0]?.groundClearance} inch
+                    {firstCardData[0]?.groundClearance} mm
                   </Typography.Text>
                 </Col>{" "}
                 <Col
@@ -822,7 +822,7 @@ const CompareCars = () => {
                   <Typography.Text
                     style={{ fontSize: ".9rem", fontWeight: "500" }}
                   >
-                    {secondCardData[0]?.groundClearance} inch
+                    {secondCardData[0]?.groundClearance} mm
                   </Typography.Text>
                 </Col>
               </Row>

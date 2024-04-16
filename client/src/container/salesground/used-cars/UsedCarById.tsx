@@ -140,7 +140,7 @@ const UsedCarById = () => {
                           color: "black",
                         }}
                       >
-                        {usedCarData?.kmsDriven?.toLocaleString()} miles
+                        {usedCarData?.kmsDriven?.toLocaleString()} kms
                       </Typography.Text>
                     </Flex>
                     <Flex

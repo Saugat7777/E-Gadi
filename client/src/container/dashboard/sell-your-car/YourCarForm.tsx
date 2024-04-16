@@ -114,7 +114,7 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
             label="Address"
             name="address"
             rules={[{ required: true, message: "Please, enter address" }]}
-            initialValue={initialValues?.ownership ?? ""}
+            initialValue={initialValues?.address ?? ""}
           >
             <Input placeholder="Enter current address" />
           </Form.Item>
@@ -191,7 +191,7 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
             label="Kms Driven"
             name="kmsDriven"
             rules={[{ required: true, message: "Please, enter a price" }]}
-            initialValue={initialValues?.price ?? ""}
+            initialValue={initialValues?.kmsDriven ?? ""}
           >
             <InputNumber addonAfter={<span>Kms.</span>} min={1} />
           </Form.Item>{" "}

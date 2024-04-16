@@ -14,7 +14,8 @@ import { useEffect, useState } from "react";
 
 import { LoginOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import logo from "../../../assets/carousel/logo.png";
+import logo from "../../../assets/logo/logo.png";
+import logoIcon from "../../../assets/logo/logoIcon.png";
 import Login from "../../../component/organism/Login";
 import {
   handelNavigatePath,
@@ -49,15 +50,18 @@ const Header = () => {
         boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.2)",
       }}
     >
-      <Row justify={"center"} align={"middle"}>
-        <Col span={20}>
+      <Row justify={"start"} align={"middle"}>
+        <Col span={24}>
           <Row align={"middle"} justify={"space-between"}>
             <Col span={9}>
               <Flex align="center" style={{ width: "100%" }}>
-                <Avatar
-                  size={screen?.xs ? 55 : 70}
-                  src={logo}
-                  shape={"square"}
+                <img
+                  src={screen?.xs ? logoIcon : logo}
+                  alt=""
+                  style={{
+                    width: screen?.xs ? "4rem" : "10rem",
+                    cursor: "pointer",
+                  }}
                 />
               </Flex>
             </Col>

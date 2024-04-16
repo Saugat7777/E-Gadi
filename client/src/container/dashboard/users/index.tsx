@@ -84,10 +84,12 @@ const Users = () => {
         render: (_: any, record: any) => {
           return (
             <Space>
-              <DeleteOutlined
-                style={{ color: "#ff8e3c" }}
-                onClick={() => handleVisibleDeleteConfirmation(record)}
-              />
+              {record?.role === "admin" ? null : (
+                <DeleteOutlined
+                  style={{ color: "#ff8e3c" }}
+                  onClick={() => handleVisibleDeleteConfirmation(record)}
+                />
+              )}
             </Space>
           );
         },

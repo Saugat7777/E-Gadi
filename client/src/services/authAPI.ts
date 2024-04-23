@@ -1,6 +1,7 @@
 import { showMessage } from "../utils/help";
 import apiSlice from "./apiSlice";
 
+// Define authentication API using RTK Query's injectEndpoints function
 export const authAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<any, string>({
@@ -20,6 +21,7 @@ export const authAPI = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["UserAuth"],
     }),
+    // login with Google endpoint
     loginWithGoogle: builder.mutation<any, any>({
       query: (formData) => ({
         url: "/auth/login/google",

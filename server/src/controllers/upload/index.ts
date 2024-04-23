@@ -41,7 +41,7 @@ export const uploadImages = async (req: Request, res: Response) => {
     if (uploadedFiles?.length === 0)
       return res
         .status(200)
-        .json({ message: "Please, upload at least one photo" });
+        .json({ message: "Please upload at least one photo" });
 
     if (uploadedFiles !== undefined && uploadedFiles.length > 0) {
       let fileUrl: string[] = [];

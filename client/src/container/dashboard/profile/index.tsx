@@ -11,9 +11,11 @@ import {
   Row,
   Spin,
   Typography,
+  
 } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { validateEmail } from "../../../utils/help";
 
 import CsImageUpload from "../../../component/atom/CsUploadImage";
 import { handleBreadCumbs } from "../../../features/globalSlice";
@@ -84,7 +86,11 @@ const Profile = () => {
                   label="Full Name"
                   name="full_name"
                   rules={[
-                    { required: true, message: "Please, enter full name" },
+                    { required: true, message: "Please enter full name" },
+                    {
+                      max: 30,
+                      message: "Full name must be 30 characters or fewer",
+                    },
                   ]}
                   initialValue={data?.full_name ?? ""}
                 >
@@ -92,7 +98,7 @@ const Profile = () => {
                 </Form.Item>{" "}
                 <Form.Item
                   name="email"
-                  rules={[{ required: true, message: "Please, enter email" }]}
+                  rules={[{ validator: validateEmail }]}
                   label="Email"
                   initialValue={data?.email ?? ""}
                 >
@@ -101,7 +107,13 @@ const Profile = () => {
                 <Form.Item
                   label="Address"
                   name="address"
-                  rules={[{ required: true, message: "Please, enter address" }]}
+                  rules={[
+                    { required: true, message: "Please enter address" },
+                    {
+                      max: 30,
+                      message: "Address must be 30 characters or fewer",
+                    },
+                  ]}
                   initialValue={data?.address ?? ""}
                 >
                   <Input placeholder="Enter a address" />
@@ -113,7 +125,11 @@ const Profile = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please, enter a contact number",
+                        message: "Please enter a contact number",
+                      },
+                      {
+                        pattern: /^[0-9]{10}$/,
+                        message: "Please enter a valid 10-digit contact number",
                       },
                     ]}
                     initialValue={data?.contactNumber ?? ""}
@@ -139,6 +155,18 @@ const Profile = () => {
                                   )
                                 );
                               }
+                              if (
+                                value &&
+                                !/^https?:\/\/(?:www\.)?facebook\.com\/.*/.test(
+                                  value
+                                )
+                              ) {
+                                return Promise.reject(
+                                  new Error(
+                                    "Please enter a valid Facebook profile link"
+                                  )
+                                );
+                              }
                               return Promise.resolve();
                             },
                           }),
@@ -158,6 +186,18 @@ const Profile = () => {
                                 return Promise.reject(
                                   new Error(
                                     "Please enter either a facebook or instagram link"
+                                  )
+                                );
+                              }
+                              if (
+                                value &&
+                                !/^https?:\/\/(?:www\.)?instagram\.com\/.*/.test(
+                                  value
+                                )
+                              ) {
+                                return Promise.reject(
+                                  new Error(
+                                    "Please enter a valid Instagram profile link"
                                   )
                                 );
                               }

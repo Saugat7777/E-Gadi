@@ -91,14 +91,20 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Brand Name"
             name="carBrand"
-            rules={[{ required: true, message: "Please, enter brand name" }]}
+            rules={[
+              { required: true, message: "Please enter brand name" },
+              { max: 15, message: "Brand name must be 15 characters or fewer" },
+            ]}
             initialValue={initialValues?.carBrand ?? ""}
           >
             <Input placeholder="Enter a brand" />
           </Form.Item>{" "}
           <Form.Item
             name="carModel"
-            rules={[{ required: true, message: "Please, enter model name" }]}
+            rules={[
+              { required: true, message: "Please enter model name" },
+              { max: 20, message: "Model name must be 20 characters or fewer" },
+            ]}
             label="Model Name"
             initialValue={initialValues?.carModel ?? ""}
           >
@@ -107,7 +113,13 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Description"
             name="description"
-            rules={[{ required: true, message: "Please, enter description" }]}
+            rules={[
+              { required: true, message: "Please enter description" },
+              {
+                max: 75,
+                message: "Description must be 75 characters or fewer",
+              },
+            ]}
             initialValue={initialValues?.description ?? ""}
           >
             <Input placeholder="Enter a description" />
@@ -115,10 +127,39 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Body Styles"
             name="bodyStyles"
-            rules={[{ required: true, message: "Please, enter body styles" }]}
-            initialValue={initialValues?.bodyStyles ?? ""}
+            rules={[{ required: true, message: "Please select body styles" }]}
+            initialValue={initialValues?.bodyStyles ?? null}
           >
-            <Input placeholder="Enter a body styles" />
+            <Select
+              placeholder="Select a body styles"
+              options={[
+                { label: "Sedan", value: "Sedan" },
+                {
+                  label: "SUV",
+                  value: "SUV",
+                },
+                {
+                  label: "Crossover",
+                  value: "Crossover",
+                },
+                {
+                  label: "Hatchback",
+                  value: "Hatchback",
+                },
+                {
+                  label: "Sports Car",
+                  value: "Sports Car",
+                },
+                {
+                  label: "Minivan",
+                  value: "Minivan",
+                },
+                {
+                  label: "Truck",
+                  value: "Truck",
+                },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             label="Made Year"
@@ -130,24 +171,52 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             }
             {...config}
           >
-            <DatePicker picker="year" format={"YYYY"} />
+             <DatePicker
+              picker="year"
+              format={"YYYY"}
+              disabledDate={(current) =>
+                current &&
+                (current.year() < 1900 ||
+                  current.year() > new Date().getFullYear())
+              }
+            />
           </Form.Item>
           <Form.Item
             label="Price"
             name="price"
-            rules={[{ required: true, message: "Please, enter a price" }]}
+            rules={[
+              { required: true, message: "Please enter a price" },
+              {
+                type: "number",
+                min: 100000,
+                message: "Minimum price is 1 lakh",
+              },
+              {
+                type: "number",
+                max: 500000000,
+                message: "Maximum price is 50 crore",
+              },
+            ]}
             initialValue={initialValues?.price ?? ""}
           >
-            <InputNumber
-              addonBefore={<span>Rs.</span>}
-              min={100000}
-              step={100000}
-            />
+            <InputNumber addonBefore={<span>Rs.</span>} step={100000} />
           </Form.Item>{" "}
           <Form.Item
             label="Range"
             name="range"
-            rules={[{ required: true, message: "Please, enter a range" }]}
+            rules={[
+              { required: true, message: "Please enter a range" },
+              {
+                type: "number",
+                min: 30,
+                message: "Minimum range is 30 kms",
+              },
+              {
+                type: "number",
+                max: 500,
+                message: "Maximum range is 1000 kms",
+              },
+            ]}
             initialValue={initialValues?.range ?? ""}
           >
             <InputNumber
@@ -158,7 +227,19 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Top Speed"
             name="topSpeed"
-            rules={[{ required: true, message: "Please, enter a top speed" }]}
+            rules={[
+              { required: true, message: "Please enter a top speed" },
+              {
+                type: "number",
+                min: 30,
+                message: "Minimum top speed is 50 kph",
+              },
+              {
+                type: "number",
+                max: 500,
+                message: "Maximum top speed is 500 kms",
+              },
+            ]}
             initialValue={initialValues?.topSpeed ?? ""}
           >
             <InputNumber
@@ -170,7 +251,17 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             label="Ground Clearance"
             name="groundClearance"
             rules={[
-              { required: true, message: "Please, enter ground clearance" },
+              { required: true, message: "Please enter ground clearance" },
+              {
+                type: "number",
+                min: 5,
+                message: "Minimum ground clearnace is 10 mm",
+              },
+              {
+                type: "number",
+                max: 50,
+                message: "Maximum ground clearance is 500 mm",
+              },
             ]}
             initialValue={initialValues?.groundClearance ?? ""}
           >
@@ -183,7 +274,17 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             label="Battery Capacity"
             name="batteryCapacity"
             rules={[
-              { required: true, message: "Please, enter battery capacity" },
+              { required: true, message: "Please enter battery capacity" },
+              {
+                type: "number",
+                min: 10,
+                message: "Minimum battery capacity is 10 kWh",
+              },
+              {
+                type: "number",
+                max: 150,
+                message: "Maximum battery capacity is 150 kWh",
+              },
             ]}
             initialValue={initialValues?.batteryCapacity ?? ""}
           >
@@ -196,7 +297,17 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             label="Charging 0 to 100 in"
             name="charging_0_to_100"
             rules={[
-              { required: true, message: "Please, enter charging 0 to 100" },
+              { required: true, message: "Please enter charging 0 to 100" },
+              {
+                type: "number",
+                min: 0.3,
+                message: "Minimum charging 0 to 100 is 0.3 hr",
+              },
+              {
+                type: "number",
+                max: 20,
+                message: "Maximum charging 0 to 100 is 20 hr",
+              },
             ]}
             initialValue={initialValues?.charging_0_to_100 ?? ""}
           >
@@ -209,12 +320,22 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             label="Seating Capacity"
             name="seatingCapacity"
             rules={[
-              { required: true, message: "Please, enter seating capacity" },
+              { required: true, message: "Please enter seating capacity" },
+              {
+                type: "number",
+                min: 1,
+                message: "Minimum seating capacity is 1 adults",
+              },
+              {
+                type: "number",
+                max: 10,
+                message: "Maximum seating capacity is 10 adults",
+              },
             ]}
             initialValue={initialValues?.seatingCapacity ?? ""}
           >
             <InputNumber
-              placeholder="Enter sitting capacity"
+              placeholder="Enter seatng capacity"
               addonAfter={<span>Adults</span>}
             />
           </Form.Item>
@@ -222,7 +343,11 @@ const NewElectricCarForm: React.FC<any> = ({ initialValues }) => {
             label="Extra features"
             name="extraFeatures"
             rules={[
-              { required: true, message: "Please, enter extra features" },
+              { required: true, message: "Please enter extra features" },
+              {
+                max: 80,
+                message: "Extra features must be 80 characters or fewer",
+              },
             ]}
             initialValue={initialValues?.extraFeatures ?? ""}
           >

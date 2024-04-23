@@ -8,6 +8,7 @@ import {
   InputNumber,
   Radio,
   Row,
+  Select
 } from "antd";
 
 import React, { useState } from "react";
@@ -81,14 +82,20 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Brand Name"
             name="carBrand"
-            rules={[{ required: true, message: "Please, enter brand name" }]}
+            rules={[
+              { required: true, message: "Please enter brand name" },
+              { max: 15, message: "Brand name must be 15 characters or fewer" },
+            ]}
             initialValue={initialValues?.carBrand ?? ""}
           >
             <Input placeholder="Enter a brand" />
           </Form.Item>{" "}
           <Form.Item
             name="carModel"
-            rules={[{ required: true, message: "Please, enter model name" }]}
+            rules={[
+              { required: true, message: "Please enter model name" },
+              { max: 15, message: "Model name must be 15 characters or fewer" },
+            ]}
             label="Model Name"
             initialValue={initialValues?.carModel ?? ""}
           >
@@ -97,7 +104,13 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Description"
             name="description"
-            rules={[{ required: true, message: "Please, enter description" }]}
+            rules={[
+              { required: true, message: "Please enter description" },
+              {
+                max: 75,
+                message: "Description must be less than 75 characters",
+              },
+            ]}
             initialValue={initialValues?.description ?? ""}
           >
             <Input placeholder="Enter a description" />
@@ -105,15 +118,42 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Ownership"
             name="ownership"
-            rules={[{ required: true, message: "Please, enter ownership" }]}
-            initialValue={initialValues?.ownership ?? ""}
+            rules={[{ required: true, message: "Please select ownership" }]}
+            initialValue={initialValues?.ownership ?? null}
           >
-            <Input placeholder="Enter a ownership" />
+             <Select
+              placeholder="Select a ownership"
+              options={[
+                { label: "First Ownerhsip", value: "First Ownerhsip" },
+                {
+                  label: "Second Ownerhsip",
+                  value: "Second Ownerhsip",
+                },
+                {
+                  label: "Third Ownerhsip",
+                  value: "Third Ownerhsip",
+                },
+                {
+                  label: "Fourth Ownerhsip",
+                  value: "Fourth Ownerhsip",
+                },
+                {
+                  label: "Four Plus Ownerhsip",
+                  value: "Four Plus Ownerhsip",
+                },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             label="Address"
             name="address"
-            rules={[{ required: true, message: "Please, enter address" }]}
+            rules={[
+              { required: true, message: "Please enter address" },
+              {
+                max: 30,
+                message: "Address must be 30 characters or fewer",
+              },
+            ]}
             initialValue={initialValues?.address ?? ""}
           >
             <Input placeholder="Enter current address" />
@@ -121,10 +161,28 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Condition"
             name="condition"
-            rules={[{ required: true, message: "Please, enter condition" }]}
-            initialValue={initialValues?.condition ?? ""}
+            rules={[{ required: true, message: "Please select condition" }]}
+            initialValue={initialValues?.condition ?? null}
           >
-            <Input placeholder="Enter condition" />
+            <Select
+              placeholder="Select a condition"
+              options={[
+                { label: "New", value: "New" },
+                { label: "Like New", value: "Like New" },
+                {
+                  label: "Used",
+                  value: "Used",
+                },
+                {
+                  label: "Fair",
+                  value: "Fari",
+                },
+                {
+                  label: "Poor",
+                  value: "Poor",
+                },
+              ]}
+            />
           </Form.Item>
           <Form.Item
             label="Modification"
@@ -161,14 +219,22 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Price"
             name="price"
-            rules={[{ required: true, message: "Please, enter a price" }]}
+            rules={[
+              { required: true, message: "Please enter a price" },
+              {
+                type: "number",
+                min: 100000,
+                message: "Minimum price is 1 lakh",
+              },
+              {
+                type: "number",
+                max: 500000000,
+                message: "Maximum price is 50 crore",
+              },
+            ]}
             initialValue={initialValues?.price ?? ""}
           >
-            <InputNumber
-              addonBefore={<span>Rs.</span>}
-              min={100000}
-              step={100000}
-            />
+            <InputNumber addonBefore={<span>Rs.</span>} step={100000} />
           </Form.Item>{" "}
           <Form.Item
             label="Negotiability"
@@ -190,7 +256,19 @@ const YourCarForm: React.FC<any> = ({ initialValues }) => {
           <Form.Item
             label="Kms Driven"
             name="kmsDriven"
-            rules={[{ required: true, message: "Please, enter a price" }]}
+            rules={[
+              { required: true, message: "Please enter kms driven" },
+              {
+                type: "number",
+                min: 10,
+                message: "Minimum kms driven is 10 kms",
+              },
+              {
+                type: "number",
+                max: 500000,
+                message: "Maximum kms driven is 500000 kms",
+              },
+            ]}
             initialValue={initialValues?.kmsDriven ?? ""}
           >
             <InputNumber addonAfter={<span>Kms.</span>} min={1} />
